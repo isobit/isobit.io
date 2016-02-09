@@ -1,5 +1,6 @@
 import gulp from 'gulp';
 import gutil from 'gulp-util';
+import run from 'gulp-run';
 import webserver from 'gulp-webserver';
 import sass from 'gulp-sass';
 import plumber from 'gulp-plumber';
@@ -111,6 +112,10 @@ gulp.task('clean', () => {
 	return del([
 		'www'
 	]);
+});
+
+gulp.task('deploy', ['default'], () => {
+	return run('git subtree push --prefix www production www').exec();
 });
 
 // Util ---------------------------------------------------------
