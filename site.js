@@ -1,6 +1,6 @@
 import path from 'path';
 export default {
-	title: "Isobit Technology",
+	title: "Isobit",
 	description: 
 		"A software development blog and project showcase covering topics like " +
 		"NodeJS, Scala, Arduino, Particle Photon, IoT, WebGL, and more.",
