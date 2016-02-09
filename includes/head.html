@@ -1,0 +1,19 @@
+<meta charset="utf-8"/>
+<meta name="description" content="{{site.description}}" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<link rel="stylesheet" href="{{site.style('main.css')}}"/>
+
+{% set sizes = ['57x57', '60x60', '72x72', '114x114', '120x120', '144x144', '152x152', '180x180'] %}
+{% for size in sizes %}
+<link rel="apple-touch-icon" sizes="{{size}}" href="{{site.asset('images/apple-icon-'+size+'.png')}}"/>
+{% endfor %}
+
+{% set sizes = ['16x16', '32x32', '96x96', '192x192'] %}
+{% for size in sizes %}
+<link rel="icon" type="image/png" sizes="{{size}}" href="{{site.asset('images/android-icon-'+size+'.png')}}"/>
+{% endfor %}
+
+<meta name="msapplication-TileImage" content="{{site.asset('images/ms-icon-144x144.png')}}"/>
+<meta name="msapplication-TileColor" content="{{site.themeColor}}"/>
+<meta name="theme-color" content="{{site.themeColor}}"/>

@@ -1,0 +1,45 @@
+title: 'Angle Hatch'
+;;;
+{% extends 'pixel-shader.html' %}
+{% block shader %}
+precision mediump float;
+
+varying vec2 position;
+uniform float time;
+
+const float waves = 50.;
+const float pi = 3.14159265;
+
+float n_sin(float n) {
+  return (sin(n) + 1.) / 2.;
+}
+
+// triangle wave from 0 to 1
+float wrap(float n) {
+  return fract(mod(n, 2.)-1.)*-1. + 1.;
+}
+
+float wave(float angle, vec2 point) {
+  float cth = cos(angle);
+  float sth = sin(angle);
+  return wrap(cth*point.x + sth*point.y);
+}
+
+// sum cosine waves at various interfering angles
+// wrap values when they exceed 1
+float quasi(float interferenceAngle, vec2 point) {
+  float sum = 1000000.;
+  for (float i = 0.; i < waves; i++) {
+    sum += wave(i*interferenceAngle, point);
+  }
+  return sin(sum);
+}
+
+void main() {
+  vec2 pos = position+1. * 2.;
+  float b = quasi(cos(time*0.006), pos);
+  vec4 c1 = vec4(.1,.5,.7,1.);
+  vec4 c2 = vec4(n_sin(time),n_sin(time+0.33*pi),n_sin(time+.66*pi),1.);
+  gl_FragColor = mix(c1,c2,b);
+}
+{% endblock %}

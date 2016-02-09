@@ -1,0 +1,126 @@
+<html>
+	<head>
+		
+
+		<meta charset="utf-8"/>
+<meta name="description" content="A software development blog and project showcase covering topics like NodeJS, Scala, Arduino, Particle Photon, IoT, WebGL, and more." />
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<link rel="stylesheet" href="/_styles/main.css"/>
+
+
+
+<link rel="apple-touch-icon" sizes="57x57" href="/_assets/images/apple-icon-57x57.png"/>
+
+<link rel="apple-touch-icon" sizes="60x60" href="/_assets/images/apple-icon-60x60.png"/>
+
+<link rel="apple-touch-icon" sizes="72x72" href="/_assets/images/apple-icon-72x72.png"/>
+
+<link rel="apple-touch-icon" sizes="114x114" href="/_assets/images/apple-icon-114x114.png"/>
+
+<link rel="apple-touch-icon" sizes="120x120" href="/_assets/images/apple-icon-120x120.png"/>
+
+<link rel="apple-touch-icon" sizes="144x144" href="/_assets/images/apple-icon-144x144.png"/>
+
+<link rel="apple-touch-icon" sizes="152x152" href="/_assets/images/apple-icon-152x152.png"/>
+
+<link rel="apple-touch-icon" sizes="180x180" href="/_assets/images/apple-icon-180x180.png"/>
+
+
+
+
+<link rel="icon" type="image/png" sizes="16x16" href="/_assets/images/android-icon-16x16.png"/>
+
+<link rel="icon" type="image/png" sizes="32x32" href="/_assets/images/android-icon-32x32.png"/>
+
+<link rel="icon" type="image/png" sizes="96x96" href="/_assets/images/android-icon-96x96.png"/>
+
+<link rel="icon" type="image/png" sizes="192x192" href="/_assets/images/android-icon-192x192.png"/>
+
+
+<meta name="msapplication-TileImage" content="/_assets/images/ms-icon-144x144.png"/>
+<meta name="msapplication-TileColor" content="#252525"/>
+<meta name="theme-color" content="#252525"/>
+
+		
+
+<script type="text/javascript" src="/_scripts/pixel.js"></script>
+
+<script id="vertex-shader" type="x-shader/x-vertex">
+attribute vec2 a_position;
+varying vec2 position;
+void main() {
+	position = (a_position + 1.0) * 0.5;
+	gl_Position = vec4(a_position, 0, 1);
+}
+</script>
+
+<script id="fragment-shader" type="x-shader/x-fragment">
+
+
+precision mediump float;
+
+varying vec2 position;
+uniform float time;
+
+const float pi = 3.1415926;
+const vec3 baseColor = vec3(.4, .4, .5);
+const vec3 cColor = vec3(.9, .5, .2);
+const vec3 cColor2 = vec3(.5, .9, .2);
+
+float garb(vec2 v, float m) {
+  return (mod(v.x*m + (1.-v.y)*m, (1.-v.x*m)+v.y*m));
+}
+
+void main() {
+  vec2 pos = abs(position);
+  float a = garb(vec2(pos.y, cos(tan(pos.y+pos.x+1000001.))), cos(time*.5)+1.5);
+  float c = garb(vec2(pos.y, sin(tan(
+    mix(pos.x, tan(pos.x-.5), cos(time))
+    -mix(pos.y, tan(pos.y-.5), cos(time))
+    +250001.+time*.325))), 
+                 cos(a+time)+1.5);
+  gl_FragColor = vec4(baseColor 
+                      + mix(cColor, cColor2, cos(time*.25)+0.5) * c,
+                      1.);
+}
+
+</script>
+
+<script type="text/javascript">
+var pixelCanvas;
+window.addEventListener('load', function() {
+	try {
+		pixelCanvas = window.pixelCanvas = new PixelCanvas({
+			canvas: document.getElementById('pixel-shader-canvas'),
+			vertexShaderSource: document.getElementById('vertex-shader').textContent,
+			fragmentShaderSource: document.getElementById('fragment-shader').textContent
+		});
+	} catch (e) {
+		alert(e);
+	}
+});
+window.addEventListener('keypress', function(e) {
+	if (e.which !== 112 && e.which !== 111) return;
+	pixelCanvas.pause();
+	var w = (e.which === 112)? 
+		parseInt(window.prompt('width')) :
+		3840;
+	var h = (e.which === 112)?
+		parseInt(window.prompt('height')) :
+		2160;
+	window.open(pixelCanvas.getPngUrl(w, h));
+});
+</script>
+
+
+		
+		<title>Isobit</title>
+		
+	</head>
+	<body>
+		
+<canvas id="pixel-shader-canvas">
+
+	</body>
+</html>

@@ -1,0 +1,19 @@
+<header class="site-header">
+	<div class="wrapper">
+		<a class="site-title" href="{{site.baseurl}}/">
+			<img src="{{site.asset('images/logo.svg')}}" height=60></img>
+			<span class="logo-text">{{site.title}}</span>
+		</a>
+		<a class="nav-toggle" href="#" onclick="toggleNav()">=</a>
+		{% include 'nav.html' %}
+	</div>
+</header>
+<script type="text/javascript">
+var headerNavEl = document.querySelector('.site-header .site-nav');
+function toggleNav() {
+	if (headerNavEl.style.display === 'block')
+		headerNavEl.style.display = 'none';
+	else
+		headerNavEl.style.display = 'block';
+}
+</script>

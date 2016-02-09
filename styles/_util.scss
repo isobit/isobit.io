@@ -1,0 +1,22 @@
+.center-content {
+	@include align-items(center);
+	@include justify-content(center);
+}
+
+.text-center {
+  text-align: center;
+}
+
+.flex-container {
+	@include display(flex);
+	@include flex-direction(row);
+}
+.flex-container-vert {
+	@extend .flex-container;
+	@include flex-direction(column);
+}
+@for $i from 1 through 2 {
+	.flex-#{$i} {
+		@include flex($i 0);
+	}
+}

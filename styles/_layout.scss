@@ -1,0 +1,165 @@
+$header-height: 6em;
+$footer-height: 2em;
+
+#wrap {
+  min-height: 100%;
+  @include media-sm {
+    padding-bottom: 2 * $footer-height;
+  }
+  @include media-md {
+    padding-bottom: $footer-height;
+  }
+}
+
+.site-nav {
+  .page-link {
+    line-height: $base-line-height;
+    &:not(:first-child) {
+      margin-left: 20px;
+    }
+  }
+}
+
+
+// Header ======================================================================
+
+.site-header {
+  padding: $spacing-unit;
+  height: $header-height;
+  overflow: hidden;
+  background-color: $header-color;
+  .site-nav {
+    @include media-sm {
+      display: none;
+      position: absolute;
+      top: $header-height;
+      left: 0;
+      right: 0;
+      background: $header-color;
+    }
+    @include media-md {
+      display: block !important;
+      padding: $spacing-unit;
+      float: right;
+    }
+  }
+  .site-nav .page-link {
+    color: $text-color;
+    @include media-sm {
+      display: block;
+      width: 100%;
+      text-align: center;
+      padding: $spacing-unit;
+      margin: 0 !important;
+      border-top: 1px solid #666;
+    }
+    @include media-md {
+      width: auto;
+    }
+  }
+  .nav-toggle {
+    float: right;
+    font-size: 50px;
+    @include media-sm {
+      display: block;
+    }
+    @include media-md {
+      display: none;
+    }
+  }
+}
+
+.site-title {
+  font-size: 42px;
+  margin-bottom: 0;
+  float: left;
+  &, &:visited {
+    color: $text-color;
+  }
+}
+
+// Footer ======================================================================
+
+.site-footer {
+  padding: $spacing-unit;
+  height: $footer-height;
+  position: relative;
+  clear: both;
+  @include media-sm {
+    margin-top: - (2 * $spacing-unit + 2 * $footer-height);
+  }
+  @include media-md {
+    margin-top: - (2 * $spacing-unit + $footer-height);
+  }
+}
+
+.footer-heading {
+  font-size: 18px;
+  margin-bottom: $spacing-unit / 2;
+}
+
+.contact-list,
+.social-media-list {
+  list-style: none;
+  margin-left: 0;
+}
+
+.footer-col-wrapper {
+  font-size: 15px;
+  margin-left: -$spacing-unit / 2;
+  @extend %clearfix;
+}
+
+// Page ========================================================================
+
+.page-content {
+  padding: $spacing-unit;
+  @extend .wrapper;
+}
+
+.page-heading {
+  font-size: 20px;
+}
+
+.post-list {
+  margin-left: 0;
+  list-style: none;
+
+  > li {
+    margin-bottom: $spacing-unit;
+  }
+}
+
+.post-meta {
+  font-size: $small-font-size;
+}
+
+.post-link {
+  display: block;
+  font-size: 24px;
+}
+
+// Posts =======================================================================
+
+.post-header {
+}
+
+.post-title {
+  font-size: 42px;
+  letter-spacing: -1px;
+  line-height: 1;
+}
+
+.post-content {
+  h2 {
+    font-size: 32px;
+  }
+
+  h3 {
+    font-size: 26px;
+  }
+
+  h4 {
+    font-size: 20px;
+  }
+}

@@ -1,0 +1,51 @@
+{% extends 'default.html' %}
+{% block head %}
+{{super()}}
+
+<script type="text/javascript" src="{{site.script('pixel.js')}}"></script>
+
+<script id="vertex-shader" type="x-shader/x-vertex">
+attribute vec2 a_position;
+varying vec2 position;
+void main() {
+	position = (a_position + 1.0) * 0.5;
+	gl_Position = vec4(a_position, 0, 1);
+}
+</script>
+
+<script id="fragment-shader" type="x-shader/x-fragment">
+{% block shader %}
+{% endblock %}
+</script>
+
+<script type="text/javascript">
+var pixelCanvas;
+window.addEventListener('load', function() {
+	try {
+		pixelCanvas = window.pixelCanvas = new PixelCanvas({
+			canvas: document.getElementById('pixel-shader-canvas'),
+			vertexShaderSource: document.getElementById('vertex-shader').textContent,
+			fragmentShaderSource: document.getElementById('fragment-shader').textContent
+		});
+	} catch (e) {
+		alert(e);
+	}
+});
+window.addEventListener('keypress', function(e) {
+	if (e.which !== 112 && e.which !== 111) return;
+	pixelCanvas.pause();
+	var w = (e.which === 112)? 
+		parseInt(window.prompt('width')) :
+		3840;
+	var h = (e.which === 112)?
+		parseInt(window.prompt('height')) :
+		2160;
+	window.open(pixelCanvas.getPngUrl(w, h));
+});
+</script>
+
+{% endblock %}
+
+{% block body %}
+<canvas id="pixel-shader-canvas">
+{% endblock %}

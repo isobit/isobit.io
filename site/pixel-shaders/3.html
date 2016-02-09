@@ -1,0 +1,32 @@
+title: 'Tangential Glitch Slide'
+;;;
+{% extends 'pixel-shader.html' %}
+{% block shader %}
+
+precision mediump float;
+
+varying vec2 position;
+uniform float time;
+
+const float pi = 3.1415926;
+const vec3 baseColor = vec3(.4, .4, .5);
+const vec3 cColor = vec3(.9, .5, .2);
+const vec3 cColor2 = vec3(.5, .9, .2);
+
+float garb(vec2 v, float m) {
+  return (mod(v.x*m + (1.-v.y)*m, (1.-v.x*m)+v.y*m));
+}
+
+void main() {
+  vec2 pos = abs(position);
+  float a = garb(vec2(pos.y, cos(tan(pos.y+pos.x+1000001.))), cos(time*.5)+1.5);
+  float c = garb(vec2(pos.y, sin(tan(
+    mix(pos.x, tan(pos.x-.5), cos(time))
+    -mix(pos.y, tan(pos.y-.5), cos(time))
+    +250001.+time*.325))), 
+                 cos(a+time)+1.5);
+  gl_FragColor = vec4(baseColor 
+                      + mix(cColor, cColor2, cos(time*.25)+0.5) * c,
+                      1.);
+}
+{% endblock %}

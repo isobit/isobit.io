@@ -1,0 +1,26 @@
+<html>
+	<head>
+		{% block head %}
+		{% include "head.html" %}
+		{% endblock %}
+		{% block title %}
+		<title>{{site.title}}</title>
+		{% endblock %}
+	</head>
+	<body>
+		{% block body %}
+		<div id="wrap">
+			{% block header %}
+			{% include "header.html" %}
+			{% endblock %}
+			<main class="page-content">
+			{% block content %}
+			{% endblock %}
+			</main>
+		</div>
+		{% block footer %}
+		{% include "footer.html" %}
+		{% endblock %}
+		{% endblock %}
+	</body>
+</html>
