@@ -4,9 +4,16 @@ order: 2
 {% extends 'default.html' %}
 
 {% block content %}
-<ul style="font-size: 42px; list-style: none">
-	{% for post in root.blog.items | sort(true, false, 'date') %}
-	<li><a href="{{post.url}}">{{post.title}}</a></li>
+<ul class="nobullet">
+	{% for grouper, list in root.blog.items | sort(true, false, 'date') | groupby('date') %}
+	<li>
+		<h2>{{grouper}}</h2>
+		<ul class="nobullet">
+			{% for post in list %}
+			<li><h3><a href="{{post.url}}">{{post.title}}</a></h3></li>
+			{% endfor %}
+		</ul>
+	</li>
 	{% endfor %}
 </ul>
 {% endblock %}

@@ -7,16 +7,15 @@ order: 3
 
 {% block content %}
 {% markdown %}
-# {{title}}
-## Pixel Shaders
+# Pixel Shaders
 
-### Live WebGL
+## Live WebGL
 Controls: `p` output png with custom size, `o` output png at 4k resolution
 {% for post in root['pixel-shaders'].items %}
 * [{{post.title | default('untitled')}}]({{post.url}})
 {% endfor %}
 
-### 4K Wallpapers
+## 4K Wallpapers
 Here are a selection of wallpapers, generated using the live WebGL shaders above:
 
 | | |
