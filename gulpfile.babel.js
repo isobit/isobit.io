@@ -115,6 +115,7 @@ gulp.task('clean', () => {
 });
 
 gulp.task('deploy', () => {
+	// `gulp clean; gulp` should be run and all changes committed prior to this
 	return run('git subtree push --prefix www production www').exec();
 });
 
