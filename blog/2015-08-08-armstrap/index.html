@@ -1,0 +1,205 @@
+<html>
+	<head>
+		
+		<meta charset="utf-8"/>
+<meta name="description" content="A software development blog and project showcase covering topics like NodeJS, Scala, Arduino, Particle Photon, IoT, WebGL, and more." />
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<link rel="stylesheet" href="/_styles/main.css"/>
+
+
+
+<link rel="apple-touch-icon" sizes="57x57" href="/_assets/images/apple-icon-57x57.png"/>
+
+<link rel="apple-touch-icon" sizes="60x60" href="/_assets/images/apple-icon-60x60.png"/>
+
+<link rel="apple-touch-icon" sizes="72x72" href="/_assets/images/apple-icon-72x72.png"/>
+
+<link rel="apple-touch-icon" sizes="114x114" href="/_assets/images/apple-icon-114x114.png"/>
+
+<link rel="apple-touch-icon" sizes="120x120" href="/_assets/images/apple-icon-120x120.png"/>
+
+<link rel="apple-touch-icon" sizes="144x144" href="/_assets/images/apple-icon-144x144.png"/>
+
+<link rel="apple-touch-icon" sizes="152x152" href="/_assets/images/apple-icon-152x152.png"/>
+
+<link rel="apple-touch-icon" sizes="180x180" href="/_assets/images/apple-icon-180x180.png"/>
+
+
+
+
+<link rel="icon" type="image/png" sizes="16x16" href="/_assets/images/android-icon-16x16.png"/>
+
+<link rel="icon" type="image/png" sizes="32x32" href="/_assets/images/android-icon-32x32.png"/>
+
+<link rel="icon" type="image/png" sizes="96x96" href="/_assets/images/android-icon-96x96.png"/>
+
+<link rel="icon" type="image/png" sizes="192x192" href="/_assets/images/android-icon-192x192.png"/>
+
+
+<meta name="msapplication-TileImage" content="/_assets/images/ms-icon-144x144.png"/>
+<meta name="msapplication-TileColor" content="#252525"/>
+<meta name="theme-color" content="#252525"/>
+
+		
+		
+		<title>Isobit Technology</title>
+		
+	</head>
+	<body>
+		
+		<div id="wrap">
+			
+			<header class="site-header">
+	<div class="wrapper">
+		<a class="site-title" href="/">
+			<img src="/_assets/images/logo.svg" height=60></img>
+			<span class="logo-text">Isobit Technology</span>
+		</a>
+		<a class="nav-toggle" href="#" onclick="toggleNav()">=</a>
+		<nav class="site-nav">
+	
+	
+	<a class="page-link" href="/art">Art</a>
+	
+	
+	
+	<a class="page-link" href="/blog">Blog</a>
+	
+	
+	
+	
+</nav>
+
+	</div>
+</header>
+<script type="text/javascript">
+var headerNavEl = document.querySelector('.site-header .site-nav');
+function toggleNav() {
+	if (headerNavEl.style.display === 'block')
+		headerNavEl.style.display = 'none';
+	else
+		headerNavEl.style.display = 'block';
+}
+</script>
+
+			
+			<main class="page-content">
+			
+<h1 id="armstrap-eagle-and-platformio">Armstrap Eagle and PlatformIO</h1>
+<p>In an attempt to learn more about microcontrollers I&#39;ve recently acquired an
+<a href="http://armstrap.org/">Armstrap Eagle</a>. This board is a significant departure
+from the simple (but limited) hardware and toolchain of Arduino fame,
+leveraging the strength of an ARM Cortex M4 and packed with extra features like
+a real-time clock and a powerful debugger. Following the documentation on the
+site, I was able to get a distribution of Eclipse running, able to compile,
+flash, and debug programs on the chip - but I wanted to see if I could do it
+another way.</p>
+<p>I had previously used the fantastic tool
+<a href="http://platformio.org/">PlatformIO</a> to build and flash my Arduino programs -
+it&#39;s simple to use and manages your libraries for you, which is great. Luckily
+there&#39;s already a board configuration for the Armstrap, but there&#39;s some
+additional steps that must be taken to actually get it working.</p>
+<h2 id="initialize">Initialize</h2>
+<p>First, create a folder for your project and initialize the PlatformIO project
+inside of it (replace 2048 with your board&#39;s memory size if necessary):</p>
+<pre><code>platformio init <span class="hljs-comment">--board armstrap_eagle2048</span>
+</code></pre><h2 id="configure-platformio">Configure PlatformIO</h2>
+<p>In <code>platformio.ini</code>, add <code>spl</code> to the framework list. This adds support for
+the ST Standard Peripheral Library. Also, set the <code>upload_protocol</code> to <code>gdb</code>,
+since the default ST-Link uploader won&#39;t work with the Armstrap Eagle.</p>
+<p>Your <code>platformio.ini</code> should look something like this:</p>
+<pre><code class="lang-ini"><span class="hljs-section">[env:armstrap_eagle2048]</span>
+<span class="hljs-attr">platform</span> = ststm32
+<span class="hljs-attr">framework</span> = cmsis,spl
+<span class="hljs-attr">board</span> = armstrap_eagle2048
+<span class="hljs-attr">targets</span> = upload
+<span class="hljs-attr">upload_protocol</span> = gdb
+</code></pre>
+<h2 id="configure-gdb">Configure gdb</h2>
+<p>For uploading to work, we have to create a script <code>upload.gdb</code> that will tell
+gdb what to do.</p>
+<pre><code>target extended /dev/cu.usbmodem7B407FD1<span class="hljs-built_in">
+monitor </span>swdp_scan
+attach 1
+load
+detach
+quit
+</code></pre><p>Most of this is taken from <a href="http://docs.armstrap.org/en/latest/getting-started-eclipse-development-tools.html#configuring-c-c-development-tools-for-armstrap-boards-eclipse-edition-for-first-use">here</a>.</p>
+<p>You can use </p>
+<pre><code>platformio serialports <span class="hljs-built_in">list</span>
+</code></pre><p>to get the serial port path if <code>/dev/cu.usbmodem7B407FD1</code> doesn&#39;t work.</p>
+<h2 id="program">Program</h2>
+<p>Here&#39;s an example <code>src/main.cpp</code> which will blink the on-board LED:</p>
+<pre><code class="lang-c++"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> &lt;stm32f4xx_gpio.h&gt;</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> &lt;stm32f4xx_rcc.h&gt;</span>
+
+void setup() {
+    RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOC, ENABLE)<span class="hljs-comment">;</span>
+
+    GPIO_InitTypeDef gpioInit<span class="hljs-comment">;</span>
+    GPIO_StructInit(&amp;gpioInit)<span class="hljs-comment">;</span>
+    gpioInit.GPIO_Mode = GPIO_Mode_OUT<span class="hljs-comment">;</span>
+    gpioInit.GPIO_Pin = GPIO_Pin_1<span class="hljs-comment">;</span>
+    GPIO_Init(GPIOC, &amp;gpioInit)<span class="hljs-comment">;</span>
+}
+
+void delay(uint32_t ms) {
+    ms *= <span class="hljs-number">3360</span><span class="hljs-comment">;</span>
+    <span class="hljs-keyword">while</span> (ms--) {
+        __NOP()<span class="hljs-comment">;</span>
+    }
+}
+
+void <span class="hljs-keyword">loop</span>() {
+    GPIO_ToggleBits(GPIOC, GPIO_Pin_1)<span class="hljs-comment">;</span>
+    delay(<span class="hljs-number">250</span>)<span class="hljs-comment">;</span>
+}
+
+<span class="hljs-keyword">int</span> main() {
+    setup()<span class="hljs-comment">;</span>
+    <span class="hljs-keyword">while</span> (true)
+        <span class="hljs-keyword">loop</span>()<span class="hljs-comment">;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span><span class="hljs-comment">;</span>
+}
+</code></pre>
+<h2 id="run">Run</h2>
+<p>To upload to the board, simply run:</p>
+<pre><code>platformio <span class="hljs-built_in">run</span>
+</code></pre>
+
+			</main>
+		</div>
+		
+		<footer class="site-footer wrapper">
+	<div class="row">
+		<div class="col-sm-12 col-md-6 text-center">
+			<a href="https://github.com/joshglendenning">
+				<span class="icon icon--github">
+					<svg viewBox="0 0 16 16">
+						<path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/>
+					</svg>
+				</span>
+				<span class="username">joshglendenning</span>
+			</a>
+		</div>
+		<!--<div class="col-sm-12 col-md-4 text-center">-->
+			<!--<a href="http://joshglendenning.com">-->
+				<!--<span class="icon">-->
+					<!--<svg viewBox="0 0 512 512">-->
+						<!--<path id="text-file-4-icon" d="M339.527,370.312H171.505v-30h168.022V370.312z M339.495,314.896h-167.99v-30h167.99V314.896z M339.495,259.562h-167.99v-30h167.99V259.562z M297.818,90v85.75h85.864V422H128.317V90H297.818 M322.818,50H88.317v412h335.365 V150.75L322.818,50z"/>-->
+					<!--</svg>-->
+				<!--</span>-->
+				<!--Resume-->
+			<!--</a>-->
+		<!--</div>-->
+		<div class="col-sm-12 col-md-6 text-center">
+			&copy; Josh Glendenning <script>document.write(new Date().getFullYear())</script>
+		</div>
+	</div>
+</footer>
+
+		
+		
+	</body>
+</html>
