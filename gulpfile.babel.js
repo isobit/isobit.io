@@ -114,7 +114,7 @@ gulp.task('clean', () => {
 	]);
 });
 
-gulp.task('deploy', ['default'], () => {
+gulp.task('deploy', () => {
 	return run('git subtree push --prefix www production www').exec();
 });
 
