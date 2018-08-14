@@ -5,38 +5,38 @@
 {% endblock %}
 {% block content %}
 <section id="graphics" style="position: fixed; bottom: 0; height: 50%; left: 0; right: 0; z-index: -1;">
-  <div id="wave"></div>
+	<div id="wave"></div>
 </section>
 <div id="page-home">
-  <div class="row">
-    <div class="col-sm-12 center-content text-center">
-      <img src="{{site.asset('images/logo.svg')}}" class="logo-image"></img>
-    </div>
-    <div class="col-sm-12 logo-text text-center" style="font-size: 50px">
-      {{site.title}}
-    </div>
-    <div class="col-sm-12 text-center">
-      {% include 'nav.html' %}
-    </div>
-  </div>
+	<div class="row">
+		<div class="col-sm-12 center-content text-center">
+			<img src="{{site.asset('images/logo.svg')}}" class="logo-image"></img>
+		</div>
+		<div class="col-sm-12 logo-text text-center" style="font-size: 50px">
+			{{site.title}}
+		</div>
+		<div class="col-sm-12 text-center">
+			{% include 'nav.html' %}
+		</div>
+	</div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r71/three.min.js"></script>
 <script src="{{site.script('glimpse.js')}}"></script>
 <script src="{{site.script('wave-glimpse.js')}}"></script>
 <script type="text/javascript">
-  // Wave:
-  var waveDiv = document.getElementById('wave');
-  var waveView = Wave.createView(waveDiv);
+	// Wave:
+	var waveDiv = document.getElementById('wave');
+	var waveView = Wave.createView(waveDiv);
 
-  var graphicsDiv = document.getElementById('graphics');
-  function resize() {
-    var w = graphicsDiv.offsetWidth;
-    var h = graphicsDiv.offsetHeight;
-    var hWave = Math.min(h, w);
-    waveView.resize(w, hWave);
-    graphicsDiv.style.height = hWave + "px";
-  }
-  window.addEventListener('resize', resize, false);
-  resize();
+	var graphicsDiv = document.getElementById('graphics');
+	function resize() {
+		var w = graphicsDiv.offsetWidth;
+		var h = graphicsDiv.offsetHeight;
+		var hWave = Math.min(h, w);
+		waveView.resize(w, hWave);
+		graphicsDiv.style.height = hWave + "px";
+	}
+	window.addEventListener('resize', resize, false);
+	resize();
 </script>
 {% endblock %}

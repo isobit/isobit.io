@@ -26,10 +26,10 @@ function GlimpseView(model, element) {
 		self.renderer.render(self.scene, self.camera);
 	};
 
-    this.toPngURL = function () {
-        self.renderer.render(self.scene, self.camera);
-        return this.renderer.domElement.toDataURL("image/png");
-    };
+	this.toPngURL = function () {
+		self.renderer.render(self.scene, self.camera);
+		return this.renderer.domElement.toDataURL("image/png");
+	};
 
 	this.animate = function() {
 		self.model.update.apply(self, [Date.now() - self.start]);
@@ -49,14 +49,14 @@ function GlimpseView(model, element) {
 }
 
 function Glimpse(params) {
-    var self = this;
-    this.init = params.init;
-    this.update = params.update;
-    this.resize = params.resize;
+	var self = this;
+	this.init = params.init;
+	this.update = params.update;
+	this.resize = params.resize;
 
-    this.createView = function(element) {
-        var view = new GlimpseView(self, element);
-        view.animate();
-        return view;
-    };
+	this.createView = function(element) {
+		var view = new GlimpseView(self, element);
+		view.animate();
+		return view;
+	};
 }

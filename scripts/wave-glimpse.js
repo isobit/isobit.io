@@ -25,9 +25,9 @@ var Wave = new Glimpse({
 				"uniform float drMax;" +
 				"uniform float w;" +
 				"uniform float h;" +
-                "varying vec3 vPosition;" +
+				"varying vec3 vPosition;" +
 				"void main() { " +
-                    "vPosition = position;" +
+				"vPosition = position;" +
 					//"// Calculate a displacement" +
 					"float drFactor = sin((t + position.x / w + position.y / (4.0 * h)) * 10.0) * (sin(t / 5.0) + 1.5);" +
 					"float dr = drMax * drFactor;" +
@@ -36,16 +36,16 @@ var Wave = new Glimpse({
 					"gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);" +
 				"}",
 			fragmentShader:
-                "uniform float w;" +
-                "uniform float h;" +
-                "varying vec3 vPosition;" +
+				"uniform float w;" +
+			    "uniform float h;" +
+				"varying vec3 vPosition;" +
 				"void main() {" +
-                    "float alpha = min(1.0, " +
-                        "min(" +
-                            "-(vPosition.y / 1.5 - h / 2.0) / h," +
-                            "((w / 2.0) - abs(vPosition.x)) / w" +
-                    "));" +
-                    "vec3 color = 0.5 * vec3(1.0, 1.0, 1.0);" +
+					"float alpha = min(1.0, " +
+						"min(" +
+							"-(vPosition.y / 1.5 - h / 2.0) / h," +
+							"((w / 2.0) - abs(vPosition.x)) / w" +
+					"));" +
+					"vec3 color = 0.5 * vec3(1.0, 1.0, 1.0);" +
 					"gl_FragColor = vec4(color.rgb * alpha, alpha);" +
 				"}"
 		});

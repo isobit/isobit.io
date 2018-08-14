@@ -5,30 +5,30 @@
 body, h1, h2, h3, h4, h5, h6,
 p, blockquote, pre, hr,
 dl, dd, ol, ul, figure {
-  margin: 0;
-  padding: 0;
+	margin: 0;
+	padding: 0;
 }
 
 html, body {
-  height: 100%;
+	height: 100%;
 }
 
 body {
-  font-family: $base-font-family;
-  font-size: $base-font-size;
-  line-height: $base-line-height;
-  font-weight: 300;
-  color: $text-color;
-  background-color: $background-color;
-  -webkit-text-size-adjust: 100%;
+	font-family: $base-font-family;
+	font-size: $base-font-size;
+	line-height: $base-line-height;
+	font-weight: 300;
+	color: $text-color;
+	background-color: $background-color;
+	-webkit-text-size-adjust: 100%;
 }
 
 h1, h2, h3, h4, h5, h6,
 p, blockquote, pre,
 ul, ol, dl, figure,
 %vertical-rhythm {
-  margin-top: $spacing-unit / 3;
-  margin-bottom: $spacing-unit / 2;
+	margin-top: $spacing-unit / 3;
+	margin-bottom: $spacing-unit / 2;
 }
 
 h1 {
@@ -62,100 +62,100 @@ h6 {
 }
 
 img {
-  max-width: 100%;
-  vertical-align: middle;
+	max-width: 100%;
+	vertical-align: middle;
 }
 
 figure > img {
-  display: block;
+	display: block;
 }
 
 figcaption {
-  font-size: $small-font-size;
+	font-size: $small-font-size;
 }
 
 ul, ol {
-  margin-left: $spacing-unit;
+	margin-left: $spacing-unit;
 }
 
 .nobullet {
-  margin-left: 0;
-  list-style: none;
+	margin-left: 0;
+	list-style: none;
 }
 
 li {
-  > ul,
-  > ol {
-    margin-bottom: 0;
-  }
+	> ul,
+	> ol {
+		margin-bottom: 0;
+	}
 }
 
 a {
-  color: $brand-color;
-  text-decoration: none;
+	color: $brand-color;
+	text-decoration: none;
 
-  &:visited {
-    color: darken($brand-color, 15%);
-  }
+	&:visited {
+		color: darken($brand-color, 15%);
+	}
 
-  &:hover {
-    color: $text-color;
-  }
+	&:hover {
+		color: $text-color;
+	}
 }
 
 blockquote {
-  padding-left: $spacing-unit / 2;
-  font-size: 18px;
-  letter-spacing: -1px;
-  font-style: italic;
+	padding-left: $spacing-unit / 2;
+	font-size: 18px;
+	letter-spacing: -1px;
+	font-style: italic;
 
-  > :last-child {
-    margin-bottom: 0;
-  }
+	> :last-child {
+		margin-bottom: 0;
+	}
 }
 
 pre,
 code {
-  font-size: 15px;
-  background-color: #333;
+	font-size: 15px;
+	background-color: #333;
 }
 
 code {
-  padding: 1px 5px;
+	padding: 1px 5px;
 }
 
 pre {
-  padding: 8px 12px;
-  overflow-x: auto;
-  > code {
-    border: 0;
-    padding-right: 0;
-    padding-left: 0;
-  }
+	padding: 8px 12px;
+	overflow-x: auto;
+	> code {
+		border: 0;
+		padding-right: 0;
+		padding-left: 0;
+	}
 }
 
 %clearfix {
-  &:after {
-    content: "";
-    display: table;
-    clear: both;
-  }
+	&:after {
+		content: "";
+		display: table;
+		clear: both;
+	}
 }
 
 .icon {
-  > svg {
-    display: inline-block;
-    width: 16px;
-    height: 16px;
-    vertical-align: middle;
-    path {
-      fill: #999;
-    }
-  }
+	> svg {
+		display: inline-block;
+		width: 16px;
+		height: 16px;
+		vertical-align: middle;
+		path {
+			fill: #999;
+		}
+	}
 }
 
 .wrapper {
-  margin: 0 auto;
-  max-width: 900px;
-  width: 100%;
+	margin: 0 auto;
+	max-width: 900px;
+	width: 100%;
 }

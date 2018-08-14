@@ -10,16 +10,18 @@ uniform float time;
 const float pi = 3.1415926;
 
 float garb(vec2 v, float m) {
-  return (mod(v.x*m + (1.-v.y)*m, (1.-v.x*m)+v.y*m));
+	return (mod(v.x*m + (1.-v.y)*m, (1.-v.x*m)+v.y*m));
 }
 
 void main() {
-  vec2 pos = abs(position);
-  float a = garb(vec2(pos.y, cos(tan(pos.y+pos.x+1000001.))), cos(time)+1.5);
-  float c = garb(vec2(pos.y, cos(tan(pos.x+1000001.+time*.3))), cos(a+time)+1.5);
-  gl_FragColor = vec4(.0*a+.1+.5*c,
-                      .0*a+.2+.9*c,
-                      .0*a+.3+.4*c,
-                      1.);
+	vec2 pos = abs(position);
+	float a = garb(vec2(pos.y, cos(tan(pos.y+pos.x+1000001.))), cos(time)+1.5);
+	float c = garb(vec2(pos.y, cos(tan(pos.x+1000001.+time*.3))), cos(a+time)+1.5);
+	gl_FragColor = vec4(
+		.0*a + .1 + .5*c,
+		.0*a + .2 + .9*c,
+		.0*a + .3 + .4*c,
+		1.
+	);
 }
 {% endblock %}

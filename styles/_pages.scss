@@ -1,17 +1,17 @@
 #page-home {
-  .logo-image {
-    max-height: 350px;
-    @include media-sm {
-      height: 200px;
-    }
-    @include media-md {
-      height: 250px;
-    }
-    @include media-lg {
-      height: 300px;
-    }
-    @include media-xl {
-      height: 350px;
-    }
-  }
+	.logo-image {
+		max-height: 350px;
+		@include media-sm {
+			height: 200px;
+		}
+		@include media-md {
+			height: 250px;
+		}
+		@include media-lg {
+			height: 300px;
+		}
+		@include media-xl {
+			height: 350px;
+		}
+	}
 }
