@@ -56,7 +56,7 @@ PixelCanvas.prototype.init = function() {
 	this.timeStart = new Date().getTime();
 	this.time = new Date().getTime() - this.timeStart;
 
-	window.addEventListener('resize', this.resize, false);
+	window.addEventListener('resize', e => this.resize(), false);
 	this.resize();
 
 	this.animate();
