@@ -1,5 +1,6 @@
-import path from 'path';
-export default {
+const path = require('path');
+
+exports.default = {
 	title: "Isobit",
 	description: 
 		"A software development blog and project showcase covering topics like " +
