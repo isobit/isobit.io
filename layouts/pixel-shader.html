@@ -39,21 +39,36 @@ window.addEventListener('load', function() {
 		alert(e);
 	}
 });
+
+function openPNG(w=null, h=null) {
+	if (w == null) w = parseInt(window.prompt('width'));
+	if (h == null) h = parseInt(window.prompt('height'));
+
+	pixelCanvas.toBlob(function(blob) {
+		var link = document.getElementById('pixel-download');
+		//link.setAttribute('download', 'pixel-render.jpg');
+		link.setAttribute('download', 'pixel-render.png');
+		link.setAttribute('href', URL.createObjectURL(blob));
+		link.click();
+	//}, w, h, mimeType='image/jpeg');
+	}, w, h, mimeType='image/png');
+}
+
 window.addEventListener('keypress', function(e) {
-	if (e.which !== 112 && e.which !== 111) return;
-	pixelCanvas.pause();
-	var w = (e.which === 112)? 
-		parseInt(window.prompt('width')) :
-		3840;
-	var h = (e.which === 112)?
-		parseInt(window.prompt('height')) :
-		2160;
-	window.open(pixelCanvas.getPngUrl(w, h));
+	switch (e.key) {
+		case 'p':
+			openPNG();
+			break;
+		case 'o':
+			openPNG(5120, 2880); // 5k
+			break;
+	}
 });
 </script>
 
 {% endblock %}
 
 {% block body %}
-<canvas id="pixel-shader-canvas">
+<canvas id="pixel-shader-canvas"></canvas>
+<a id="pixel-download" href="" style="display: none;"></a>
 {% endblock %}

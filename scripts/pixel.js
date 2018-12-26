@@ -1,3 +1,21 @@
+// Canvas toBlob polyfill https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toBlob#Polyfill
+if (!HTMLCanvasElement.prototype.toBlob) {
+	Object.defineProperty(HTMLCanvasElement.prototype, 'toBlob', {
+		value: function (callback, type, quality) {
+			var dataURL = this.toDataURL(type, quality).split(',')[1];
+			setTimeout(function() {
+				var binStr = atob( dataURL ),
+					len = binStr.length,
+					arr = new Uint8Array(len);
+				for (var i = 0; i < len; i++ ) {
+					arr[i] = binStr.charCodeAt(i);
+				}
+				callback( new Blob( [arr], {type: type || 'image/png'} ) );
+			});
+		}
+	});
+}
+
 function PixelCanvas(opts) {
 	this.canvas = opts.canvas;
 	this.vertexShaderSource = opts.vertexShaderSource;
@@ -114,11 +132,19 @@ PixelCanvas.prototype.resume = function() {
 }
 
 PixelCanvas.prototype.getPngUrl = function(w, h) {
+
+PixelCanvas.prototype.toBlob = function(callback, w, h, mimeType, quality) {
+	var wasPaused = this.paused;
 	this.pause();
+	this.deregisterResize();
 	this.resize(w, h);
 	this.render();
-	var url = this.canvas.toDataURL('string/png');
-	this.resize();
-	this.resume();
-	return url;
+	var cb = (function(blob) {
+		callback(blob);
+		this.registerResize();
+		if (!wasPaused) {
+			this.resume();
+		}
+	}).bind(this);
+	this.canvas.toBlob(cb, mimeType, quality);
 }
