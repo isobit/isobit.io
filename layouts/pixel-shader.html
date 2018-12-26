@@ -2,6 +2,13 @@
 {% block head %}
 {{super()}}
 
+<style>
+#pixel-shader-canvas {
+	width: 100%;
+	height: 100%;
+}
+</style>
+
 <script type="text/javascript" src="{{site.script('pixel.js')}}"></script>
 
 <script id="vertex-shader" type="x-shader/x-vertex">
@@ -20,6 +27,7 @@ void main() {
 
 <script type="text/javascript">
 var pixelCanvas;
+
 window.addEventListener('load', function() {
 	try {
 		pixelCanvas = window.pixelCanvas = new PixelCanvas({

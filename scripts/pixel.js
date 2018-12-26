@@ -56,17 +56,30 @@ PixelCanvas.prototype.init = function() {
 	this.timeStart = new Date().getTime();
 	this.time = new Date().getTime() - this.timeStart;
 
-	window.addEventListener('resize', e => this.resize(), false);
-	this.resize();
+	this.registerResize();
 
 	this.animate();
-}
+};
+
+PixelCanvas.prototype.registerResize = function() {
+	this.deregisterResize();
+	this.resizeHandler = () => this.resize();
+	window.addEventListener('resize', this.resizeHandler, false);
+	this.resize();
+};
+
+PixelCanvas.prototype.deregisterResize = function() {
+	if (this.resizeHandler == null) return;
+	window.removeEventListener('resize', this.resizeHandler, false);
+	this.resizeHandler = null;
+};
 
 PixelCanvas.prototype.resize = function(w, h) {
-	w = w || window.innerWidth; h = h || window.innerHeight;
+	w = w || this.canvas.clientWidth;
+	h = h || this.canvas.clientHeight;
 	this.canvas.width = w;
 	this.canvas.height = h;
-	this.gl.viewport(0, 0, this.canvas.width, this.canvas.height);
+	this.gl.viewport(0, 0, w, h);
 };
 
 PixelCanvas.prototype.animate = function() {
