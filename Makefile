@@ -1,6 +1,6 @@
 .PHONY: build
 build: node_modules
-	npm run build
+	./node_modules/.bin/gulp
 
 .PHONY: serve
 serve: node_modules
