@@ -118,7 +118,7 @@ PixelCanvas.prototype.render = function() {
 	gl.enableVertexAttribArray(positionLocation);
 	gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
 
-	gl.uniform1f(gl.getUniformLocation(this.program, 'time'), this.time / 1000 );
+	gl.uniform1f(gl.getUniformLocation(this.program, 'time'), this.time / 1000);
 
 	gl.drawArrays(gl.TRIANGLES, 0, 6);
 };
@@ -128,10 +128,14 @@ PixelCanvas.prototype.pause = function() {
 }
 
 PixelCanvas.prototype.resume = function() {
+	this.timeStart = new Date().getTime() - this.time;
 	this.paused = false;
 }
 
-PixelCanvas.prototype.getPngUrl = function(w, h) {
+PixelCanvas.prototype.step = function(t=1.0) {
+	this.time += t;
+	this.render();
+}
 
 PixelCanvas.prototype.toBlob = function(callback, w, h, mimeType, quality) {
 	var wasPaused = this.paused;

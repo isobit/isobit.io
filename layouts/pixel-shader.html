@@ -60,7 +60,28 @@ window.addEventListener('keypress', function(e) {
 			openPNG();
 			break;
 		case 'o':
+			//openPNG(3840, 2160); // 4k
 			openPNG(5120, 2880); // 5k
+			//openPNG(7680, 4320);  // 4k * 2
+			break;
+		case ' ': // spacebar
+			if (pixelCanvas.paused) {
+				pixelCanvas.resume();
+			} else {
+				pixelCanvas.pause();
+			}
+			break;
+		case '.':
+			pixelCanvas.step();
+			break;
+		case ',':
+			pixelCanvas.step(-1.0);
+			break;
+		case '>':
+			pixelCanvas.step(10.0);
+			break;
+		case '<':
+			pixelCanvas.step(-10.0);
 			break;
 	}
 });
