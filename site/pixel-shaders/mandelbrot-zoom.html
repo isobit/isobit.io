@@ -8,11 +8,11 @@ varying vec2 position;
 uniform float time;
 uniform vec2 resolution;
 
-const int iter = 200;
+const int iter = 300;
 const float pi = 3.14159265;
 
 float n_sin(float n) {
-	return (sin(n) + 1.) / 2.;
+	return (cos(n+pi) + 1.) / 2.;
 }
 
 float fractal(vec2 c) {
@@ -35,7 +35,8 @@ float fractal(vec2 c) {
     i = _i;
   }
 
-  return (i == iter ? 0.0 : float(i) / float(iter));
+  return (i == iter ? 0.0 : float(i) / float(mix(0.1, 1.0, n_sin(time/2. + pi)) * 100.0));
+  /* return (i == iter ? 0.0 : float(i) / float(mix(0.1, 1.0, n_sin(time)) * float(iter))); */
 }
 
 vec3 hsv2rgb(vec3 c) {
@@ -45,29 +46,32 @@ vec3 hsv2rgb(vec3 c) {
 }
 
 vec2 zoom(vec2 p, vec2 target, float scale) {
-  return ((p - target) / scale) + target;
+  return ((p - target) / exp(scale)) + target;
 }
 
 void main() {
+  vec2 zoom_point;
+  zoom_point = vec2(-0.235127, 0.827217); // lightning
+  if (mod(time, 12.*pi) > 4.*pi)
+    zoom_point = vec2(-1.25066, 0.02009); // oval
+  if (mod(time, 12.*pi) > 8.*pi)
+    zoom_point = vec2(-0.7451575, 0.112575); // spiral
+
+  /* float zoom_scale = n_sin(time/2.0) * 11.0; */
+  float zoom_scale = n_sin(time/2.0) * 11.5;
+
   vec2 p = position;
-
-  /* float zoom = n_sin(time) * 10.0 + 0.1; */
-  /* float zoom = time; */
-  /* vec2 c = (p - vec2(0.9, 0.5)) / zoom; */
-  /* vec2 c = (p / zoom) - (vec2(1.0, 0.5) / zoom); */
-  /* vec2 c = (p*2.0 - 0.5*2.0) * 2.0; */
   vec2 c = (p - vec2(0.7, 0.5)) * 4.0;
-  c = c * vec2(1.0, 0.5);
-  c = zoom(c, vec2(-1.405, 0.0), exp(n_sin(time) * 10.0));
-  /* c = zoom(c, vec2(-1.4, 0.0), 1.0); */
-
+  c = c * vec2(1.0, 0.6);
+  /* c = c * vec2(1.0, resolution.y / resolution.x); */
+  c = zoom(c, vec2(zoom_point), zoom_scale);
   /* float f = (abs(c.x) < 0.01 || abs(c.y) < 0.01) ? 1.0 : 0.0; */
   /* gl_FragColor = vec4(mod(c.x, 1.0), mod(c.y, 1.0), 0.5, 1.0); */
   /* gl_FragColor = vec4(f, f, f, 1.0); */
 
   float f = fractal(c);
-  f = mix(0.0, 0.5, f) + time/10.0;
+  f = mix(0.0, 0.5, f) + time*0.1;
   /* gl_FragColor = vec4(hsv2rgb(vec3(f + time/7.0, 1.0, 1.0)), 1.0); */
-  gl_FragColor = vec4(hsv2rgb(vec3(f, 1.0, 1.0)), 1.0);
+  gl_FragColor = vec4(hsv2rgb(vec3(f, 0.8, 1.0)), 1.0);
 }
 {% endblock %}
